@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kismet – Meet someone worth the first message</title>
+<meta name="description" content="Kismet is a dating site with swipe cards, flip-card icebreakers, compatibility scores and safety tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>
+  /* Apply the saved theme before the page paints so there is no flash. */
+  try {
+    var t = localStorage.getItem('kismet.theme');
+    if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', JSON.parse(JSON.stringify(t)).replace(/"/g, ''));
+  } catch (e) {}
+</script>
+</head>
+<body>
+
+<!-- Ambient background: moving blobs + floating hearts (canvas) -->
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="hearts" aria-hidden="true"></canvas>
+
+<!-- ============ TOP BAR ============ -->
+<header class="top" id="top">
+  <a class="logo" href="#home" data-go="landing" aria-label="Kismet home">
+    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF4F81"/><stop offset="1" stop-color="#FFB067"/></linearGradient></defs><path fill="url(#lg)" d="M16 29S3 21 3 11.5A6.5 6.5 0 0 1 16 9a6.5 6.5 0 0 1 13 2.5C29 21 16 29 16 29z"/><path d="M9 15h4l2-4 3 8 2-4h3" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>Kismet</span>
+  </a>
+  <nav class="top-links" aria-label="Sections">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#play">Play</a>
+    <a href="#safety">Safety</a>
+    <a href="#pricing">Pricing</a>
+  </nav>
+  <div class="top-actions">
+    <button class="icon-btn" id="themeBtn" aria-label="Switch theme" title="Switch theme"></button>
+    <button class="btn btn-grad" data-open-app>Open the app</button>
+  </div>
+</header>
+
+<!-- ============ LANDING ============ -->
+<main id="landing">
+
+  <section class="hero" id="home">
+    <div class="hero-copy">
+      <p class="pill"><span class="live-dot"></span> 1,284 people are swiping right now</p>
+      <h1 id="heroTitle">Meet someone worth the first message.</h1>
+      <p class="lead">Swipe real profiles, flip an icebreaker card, see why you match, and plan the date. All in one place, with verified people and safety tools built in.</p>
+      <div class="hero-cta">
+        <button class="btn btn-grad btn-lg" data-open-app>Start matching</button>
+        <a class="btn btn-ghost btn-lg" href="#features">See what is inside</a>
+      </div>
+      <dl class="stats">
+        <div><dt>Verified members</dt><dd data-count="2400000" data-fmt="m">2.4M</dd></div>
+        <div><dt>Matches every week</dt><dd data-count="180000" data-fmt="k">180K</dd></div>
+        <div><dt>First dates planned</dt><dd data-count="64000" data-fmt="k">64K</dd></div>
+      </dl>
+      <p class="fine">Figures are sample content for this prototype.</p>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <svg class="pulse" viewBox="0 0 520 120" preserveAspectRatio="none"><path d="M0 60H150L170 60 190 18 220 104 244 60H300L320 60 338 30 358 84 372 60H520"/></svg>
+      <div class="fcard fc1" id="fc1"></div>
+      <div class="fcard fc2" id="fc2"></div>
+      <div class="fcard fc3" id="fc3"></div>
+      <div class="chip chip-a"><b>It's a match</b><small>You and Aanya liked each other</small></div>
+      <div class="chip chip-b"><b>94%</b><small>compatibility</small></div>
+      <div class="chip chip-c"><b>Coffee at 6?</b><small>Aanya is typing…</small></div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+  <section class="sec" id="features">
+    <div class="sec-head">
+      <h2>Everything a good dating app does, in one place</h2>
+      <p>Twenty features that make it easier to meet, talk and actually go on the date.</p>
+    </div>
+    <div class="bento" id="featureGrid"></div>
+  </section>
+
+  <section class="sec" id="how">
+    <div class="sec-head">
+      <h2>From hello to first date in three steps</h2>
+    </div>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <section class="sec" id="play">
+    <div class="sec-head">
+      <h2>Play cards that break the ice</h2>
+      <p>Tap the card. Every flip is a question you can send to a match.</p>
+    </div>
+    <div class="play-demo">
+      <button class="flip" id="landFlip" aria-label="Flip the card">
+        <span class="flip-in">
+          <span class="face front"><svg viewBox="0 0 32 32" width="64" height="64" aria-hidden="true"><path fill="#fff" fill-opacity=".9" d="M16 29S3 21 3 11.5A6.5 6.5 0 0 1 16 9a6.5 6.5 0 0 1 13 2.5C29 21 16 29 16 29z"/></svg><em>Tap to flip</em></span>
+          <span class="face back"><small>Icebreaker</small><strong id="landQ"></strong></span>
+        </span>
+      </button>
+      <div class="play-side">
+        <h3>Four ways to play</h3>
+        <ul class="ticks">
+          <li>Flip cards: draw a question, send it to a match</li>
+          <li>Would you rather: see how everyone else answered</li>
+          <li>Compatibility quiz: five questions, one result</li>
+          <li>Date spinner: a vibe, a place and a twist</li>
+        </ul>
+        <button class="btn btn-grad" data-open-app="play">Play inside the app</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="safety">
+    <div class="sec-head">
+      <h2>Built to feel safe</h2>
+      <p>Good dating starts with trust. These tools are on for everyone.</p>
+    </div>
+    <div class="safety-grid" id="safetyGrid"></div>
+  </section>
+
+  <section class="sec" id="pricing">
+    <div class="sec-head">
+      <h2>Pick your plan</h2>
+      <p>Start free. Upgrade when you want more.</p>
+    </div>
+    <div class="plans" id="plans"></div>
+    <p class="fine center">Prices are placeholders for this prototype.</p>
+  </section>
+
+  <section class="cta-band">
+    <h2>Your next first message is waiting.</h2>
+    <button class="btn btn-grad btn-lg" data-open-app>Open the app</button>
+  </section>
+
+  <footer class="foot">
+    <span>© Kismet. Prototype build.</span>
+    <span>
+      <a href="#safety">Safety</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#features">Features</a>
+    </span>
+  </footer>
+</main>
+
+<!-- ============ APP ============ -->
+<div id="app" hidden>
+  <aside class="rail" aria-label="App navigation">
+    <button class="rail-btn" data-view="discover"><span data-i="flame"></span><b>Discover</b></button>
+    <button class="rail-btn" data-view="likes"><span data-i="heart"></span><b>Likes</b><em id="likesBadge">6</em></button>
+    <button class="rail-btn" data-view="chats"><span data-i="chat"></span><b>Chats</b><em id="chatBadge" hidden>0</em></button>
+    <button class="rail-btn" data-view="play"><span data-i="dice"></span><b>Play</b></button>
+    <button class="rail-btn" data-view="profile"><span data-i="user"></span><b>You</b></button>
+    <button class="rail-btn rail-exit" id="exitApp"><span data-i="x"></span><b>Exit</b></button>
+  </aside>
+
+  <section class="view" id="v-discover">
+    <div class="disc">
+      <div class="disc-main">
+        <div class="disc-bar">
+          <div>
+            <h2>Discover</h2>
+            <p id="discSub">People near you</p>
+          </div>
+          <div class="disc-tools">
+            <button class="chip-btn" id="boostBtn"><span data-i="bolt"></span><b id="boostLabel">Boost</b></button>
+            <button class="chip-btn" id="filterBtn"><span data-i="filter"></span><b>Filters</b></button>
+          </div>
+        </div>
+        <div class="deck-wrap">
+          <div class="deck" id="deck" aria-live="polite"></div>
+          <div class="deck-empty" id="deckEmpty" hidden>
+            <h3>You have seen everyone nearby</h3>
+            <p>Widen your filters or start again to see profiles you passed on.</p>
+            <div class="row">
+              <button class="btn btn-ghost" id="emptyFilters">Change filters</button>
+              <button class="btn btn-grad" id="emptyReset">Start again</button>
+            </div>
+          </div>
+        </div>
+        <div class="actions" id="actions">
+          <button class="act act-sm" data-act="rewind" aria-label="Rewind last swipe" title="Rewind (Z)"><span data-i="undo"></span></button>
+          <button class="act act-lg act-nope" data-act="nope" aria-label="Pass" title="Pass (Left arrow)"><span data-i="x"></span></button>
+          <button class="act act-sm act-super" data-act="super" aria-label="Super like" title="Super like (Up arrow)"><span data-i="star"></span></button>
+          <button class="act act-lg act-like" data-act="like" aria-label="Like" title="Like (Right arrow)"><span data-i="heart"></span></button>
+          <button class="act act-sm" data-act="info" aria-label="Open full profile" title="Full profile (I)"><span data-i="info"></span></button>
+        </div>
+        <p class="hint">Drag the card, use the buttons, or press the arrow keys. Tap the left or right side of a photo to see more.</p>
+      </div>
+      <aside class="disc-side" id="insight"></aside>
+    </div>
+  </section>
+
+  <section class="view" id="v-likes" hidden>
+    <div class="pane">
+      <div class="pane-head">
+        <div><h2>Likes you</h2><p id="likesSub">6 people already like you</p></div>
+        <button class="btn btn-grad" id="goldBtn">Try Gold</button>
+      </div>
+      <h3 class="mini">Daily picks</h3>
+      <div class="picks" id="picks"></div>
+      <h3 class="mini">Liked you</h3>
+      <div class="likes-grid" id="likesGrid"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-chats" hidden>
+    <div class="chats" id="chatsWrap">
+      <div class="chat-list">
+        <h2>Chats</h2>
+        <div class="new-matches" id="newMatches"></div>
+        <div id="chatList"></div>
+      </div>
+      <div class="thread" id="thread"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-play" hidden>
+    <div class="pane">
+      <div class="pane-head"><div><h2>Play</h2><p>Games to start a conversation</p></div></div>
+      <div class="tabs" role="tablist" id="playTabs">
+        <button role="tab" data-tab="flip" aria-selected="true">Flip cards</button>
+        <button role="tab" data-tab="wyr" aria-selected="false">Would you rather</button>
+        <button role="tab" data-tab="quiz" aria-selected="false">Compatibility quiz</button>
+        <button role="tab" data-tab="spin" aria-selected="false">Date spinner</button>
+      </div>
+      <div id="playBody"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-profile" hidden>
+    <div class="pane">
+      <div class="pane-head"><div><h2>Your profile</h2><p>What people see when they find you</p></div></div>
+      <div class="prof">
+        <form class="card-form" id="profForm" autocomplete="off">
+          <label for="pName">Name</label>
+          <input id="pName" maxlength="20">
+          <div class="two">
+            <div><label for="pAge">Age</label><input id="pAge" type="number" min="18" max="99"></div>
+            <div><label for="pCity">City</label><input id="pCity" maxlength="24"></div>
+          </div>
+          <label for="pJob">Job</label>
+          <input id="pJob" maxlength="30">
+          <label for="pBio">Bio <span id="bioCount" class="muted"></span></label>
+          <textarea id="pBio" rows="3" maxlength="160"></textarea>
+          <label>Looking for</label>
+          <div class="pills" id="pIntent"></div>
+          <label>Interests <span class="muted">(pick up to 6)</span></label>
+          <div class="pills" id="pTags"></div>
+          <h3 class="mini">Settings</h3>
+          <div class="toggles" id="toggles"></div>
+        </form>
+        <div class="prof-side">
+          <div class="prof-preview" id="profPreview"></div>
+          <div class="strength" id="strength"></div>
+          <button class="btn btn-ghost" id="verifyBtn">Get verified</button>
+          <button class="btn btn-ghost" id="safetyBtn">Open safety centre</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabbar" aria-label="App navigation (mobile)">
+    <button data-view="discover"><span data-i="flame"></span><b>Discover</b></button>
+    <button data-view="likes"><span data-i="heart"></span><b>Likes</b></button>
+    <button data-view="chats"><span data-i="chat"></span><b>Chats</b></button>
+    <button data-view="play"><span data-i="dice"></span><b>Play</b></button>
+    <button data-view="profile"><span data-i="user"></span><b>You</b></button>
+  </nav>
+</div>
+
+<!-- ============ OVERLAYS ============ -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" id="modalBox"></div>
+</div>
+<div class="match" id="matchOv" hidden></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
